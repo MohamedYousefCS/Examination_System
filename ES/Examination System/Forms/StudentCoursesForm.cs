@@ -4,8 +4,6 @@ namespace Examination_System
 {
     public partial class StudentCoursesForm : Form
     {
-        //connect to db
-        //Scaffold-DbContext "Server=.;Database=ExaminationSystem;Trusted_Connection=True;TrustServerCertificate=True;"Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
         ExaminationSystemContext db;
         int StdId = -1;
         public StudentCoursesForm(int studentId)

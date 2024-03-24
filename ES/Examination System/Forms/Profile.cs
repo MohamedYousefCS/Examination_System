@@ -47,9 +47,19 @@ namespace Examination_System
                     {
                         Student stu = db.Students.FromSql($"EXECUTE dbo.SelectStudentByID {Id}").AsEnumerable().SingleOrDefault();
                         stu.Name = txt_name.Text;
-                        stu.Email = txt_email.Text;
-                        db.SaveChanges();
-                        msg("Updated");
+                        try
+                        {
+                            stu.Email = txt_email.Text;
+
+                            db.SaveChanges();
+                            msg("Updated");
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show($"please try enter unique email you can't repeat Email ");
+                           
+                        }
+                       
                     }
                     else if(Role == "Instructor")
                     {
@@ -92,9 +102,13 @@ namespace Examination_System
             }
         }
 
+
         private void btn_pass_Click(object sender, EventArgs e)
         {
-           
+            Update_password password = new Update_password(Id, Role);
+            this.Hide();
+            password.ShowDialog();
+            this.Close();
         }
 
         private void btn_courses_Click(object sender, EventArgs e)
