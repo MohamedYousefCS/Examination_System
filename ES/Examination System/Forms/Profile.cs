@@ -99,7 +99,19 @@ namespace Examination_System
 
         private void btn_courses_Click(object sender, EventArgs e)
         {
-          
+            if (Role == "Student")
+            {
+                StudentCoursesForm coursesStud = new StudentCoursesForm(Id);
+                this.Hide();
+                coursesStud.ShowDialog();
+                this.Close();
+
+            }
+            else if (Role == "Instructor")
+            {
+               
+                
+            }
         }
 
         private void btn_Reports_Click(object sender, EventArgs e)
