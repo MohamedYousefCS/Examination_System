@@ -2,30 +2,29 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Examination_System
 {
     public partial class StudentExamForm : Form
     {
-        ExaminationSystemContext db;
-        private TimeSpan examDuration = TimeSpan.FromMinutes(15);
-        private TimeSpan remainingTime;
+        private readonly ExaminationSystemContext db;
+        private readonly TimeSpan examDuration = TimeSpan.FromMinutes(15);
+        private readonly int CID;
+        private readonly int StuID;
+        private int EID = -1;
+        private int Q_id = -1;
+        private string StudAns = "";
+        private int currentQuestionIndex = 0;
+        private List<ExamStQ> QuestionsList;
         private DateTime startTime;
-        int CID = -1;
-        int EID = -1;
-        int StuID = -1;
-        int Q_id = -1;
-        string StudAns = "";
-        int currentQuestionIndex = 0;
-        List<ExamStQ> QuestionsList;
+        private TimeSpan remainingTime;
+
+
+        private ProgressBar progressBar;
         public StudentExamForm(int CourceID, int studID)
         {
             InitializeComponent();
@@ -33,20 +32,45 @@ namespace Examination_System
             CID = CourceID;
             StuID = studID;
             remainingTime = examDuration;
+
+
+            // Initialize the ProgressBar
+            progressBar = new ProgressBar();
+            progressBar.Location = new Point(10, 10); // Set the location
+            progressBar.Size = new Size(200, 20); // Set the size
+            progressBar.Minimum = 0; // Set the minimum value
+            progressBar.Maximum = 100; // Set the maximum value
+            progressBar.Value = 0; // Set the initial value
+            progressBar.Style = ProgressBarStyle.Continuous; // Set the style
+            Controls.Add(progressBar);
         }
-        class ExamViewModel
+
+        private void UpdateProgressBar(int value)
         {
-            public int Id { get; set; }
-            public string Msg { get; set; }
+            // Ensure the value is within the minimum and maximum range
+            value = Math.Max(progressBar.Minimum, Math.Min(progressBar.Maximum, value));
+            progressBar.Value = value;
         }
 
         private void StudExam_Load(object sender, EventArgs e)
         {
-            GenerateExam();
-            startTime = DateTime.Now;
-            Timer.Start();
+            try
+            {
+                GenerateExam();
+                startTime = DateTime.Now;
+                Timer.Start();
+
+                // Update progress bar to indicate exam loading progress
+                UpdateProgressBar(25);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+            }
         }
-        void GenerateExam()
+
+        private void GenerateExam()
         {
             var examData = db.Database.SqlQuery<ExamViewModel>($"EXECUTE Generate_Exam 'test', {CID}, {StuID}").AsEnumerable().SingleOrDefault();
             if (examData != null && examData.Id != -1)
@@ -59,42 +83,44 @@ namespace Examination_System
             }
             else
             {
-                if (examData.Msg == "you have already done an exam on the same course")
+                if (examData?.Msg == "you have already done an exam on the same course")
                 {
                     var id = db.ExamStQs.FirstOrDefault(d => d.StudentId == StuID);
                     MessageBox.Show(examData.Msg);
                     FinalResultForm result = new FinalResultForm(id.ExamId, CID, StuID);
-                    this.Hide();
+                    Hide();
                     result.ShowDialog();
-                    this.Close();
+                    Close();
                 }
                 else
                 {
-                    MessageBox.Show(examData.Msg);
+                    MessageBox.Show(examData?.Msg ?? "No exam found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     StudentCoursesForm stud = new StudentCoursesForm(StuID);
-                    this.Hide();
+                    Hide();
                     stud.ShowDialog();
-                    this.Close();
+                    Close();
                 }
             }
         }
-        void GetExamQuestion()
+
+        private void GetExamQuestion()
         {
-            QuestionsList = db.ExamStQs.FromSql($"EXECUTE Select_Exam_st_Q_For_Exam {EID},{StuID}").AsEnumerable().ToList();
-            lbl_Etitle.Text = db.Exams.FromSql($"EXECUTE Select_exam {EID}").AsEnumerable().SingleOrDefault().Title;
+            QuestionsList = db.ExamStQs.FromSql($"EXECUTE Select_Exam_st_Q_For_Exam {EID},{StuID}").ToList();
+            lbl_Etitle.Text = db.Exams.FromSql($"EXECUTE Select_exam {EID}").AsEnumerable().SingleOrDefault()?.Title;
         }
-        void ResetAnswers()
+
+        private void ResetAnswers()
         {
             rb_ans1.Checked = false;
             rb_ans2.Checked = false;
             rb_ans3.Checked = false;
             rb_ans4.Checked = false;
         }
-        string GetCourseName(int? courseId)
+
+        private string GetCourseName(int? courseId)
         {
-            if (courseId == null) return "Not Found";
             var cname = db.Courses.FromSql($"EXECUTE dbo.Select_Course {courseId}").AsEnumerable().SingleOrDefault();
-            return cname.Name;
+            return cname?.Name ?? "Not Found";
         }
 
         private void DisplayCurrentQuestion()
@@ -104,17 +130,17 @@ namespace Examination_System
                 ExamStQ currentQuestion = QuestionsList[currentQuestionIndex];
                 Q_id = currentQuestion.QId;
                 var Current = db.Questions.FromSql($"EXECUTE dbo.Select_Question_ById {Q_id}").AsEnumerable().SingleOrDefault();
-                lbl_index.Text = $"{currentQuestionIndex+1} - ";
-                lbl_question.Text = Current.Title;
-                lbl_grade.Text = $"{Current.Grade.ToString()} marks";
-                lbl_Cname.Text = GetCourseName(Current.CourseId);
-                var chocies = db.QuestionChoices.FromSql($"EXECUTE dbo.Select_Question_choices_ById {Q_id}").AsEnumerable().ToList();
+                lbl_index.Text = $"{currentQuestionIndex + 1} - ";
+                lbl_question.Text = Current?.Title ?? "Question not found";
+                lbl_grade.Text = $"{Current?.Grade.ToString() ?? "0"} marks";
+                lbl_Cname.Text = GetCourseName(Current?.CourseId);
+                var chocies = db.QuestionChoices.FromSql($"EXECUTE dbo.Select_Question_choices_ById {Q_id}").ToList();
                 if (chocies != null)
                 {
-                    rb_ans1.Text = chocies[0].Choice ?? "";
-                    rb_ans2.Text = chocies[1].Choice ?? "";
+                    rb_ans1.Text = chocies.ElementAtOrDefault(0)?.Choice ?? "";
+                    rb_ans2.Text = chocies.ElementAtOrDefault(1)?.Choice ?? "";
 
-                    if (Current.Type == 0)
+                    if (Current?.Type == 0)
                     {
                         lbl_Type.Text = "T/F Question: ";
                         rb_ans3.Visible = false;
@@ -123,15 +149,15 @@ namespace Examination_System
                     else
                     {
                         lbl_Type.Text = "Mcq Question: ";
-                        rb_ans3.Text = chocies[2].Choice ?? "";
-                        rb_ans4.Text = chocies[3].Choice ?? "";
+                        rb_ans3.Text = chocies.ElementAtOrDefault(2)?.Choice ?? "";
+                        rb_ans4.Text = chocies.ElementAtOrDefault(3)?.Choice ?? "";
                         rb_ans3.Visible = true;
                         rb_ans4.Visible = true;
                     }
 
                     ResetAnswers();
 
-                    if (currentQuestion.Answer != null)
+                    if (!string.IsNullOrEmpty(currentQuestion.Answer))
                     {
                         foreach (var choice in chocies)
                         {
@@ -153,13 +179,14 @@ namespace Examination_System
                 }
             }
         }
+
         private void UpdateAnswer(object sender, EventArgs e)
         {
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null && radioButton.Checked)
             {
-                //db.Database.ExecuteSqlRaw($"EXECUTE dbo.update_Exam_St_Q {EID}, {StuID}, {Q_id}, '{radioButton.Text}'");
-                db.Database.ExecuteSqlRaw("EXECUTE dbo.update_Exam_St_Q {0}, {1}, {2}, {3}",EID, StuID, Q_id, radioButton.Text);
+               
+                db.Database.ExecuteSqlRaw("EXECUTE dbo.update_Exam_St_Q {0}, {1}, {2}, {3}", EID, StuID, Q_id, radioButton.Text);
                 var questionToUpdate = QuestionsList.FirstOrDefault(q => q.QId == Q_id);
                 if (questionToUpdate != null)
                 {
@@ -168,7 +195,8 @@ namespace Examination_System
                 db.SaveChanges();
             }
         }
-        void Next_Back_btn()
+
+        private void Next_Back_btn()
         {
             if (currentQuestionIndex == 0)
             {
@@ -187,83 +215,59 @@ namespace Examination_System
                 btn_next.Visible = true;
                 btn_back.Visible = true;
                 btn_submit.Visible = false;
-
             }
         }
+
         private void btn_next_Click(object sender, EventArgs e)
         {
-            if (currentQuestionIndex < QuestionsList.Count - 1)
+            if (ValidateAnswerSelected())
             {
-                if (QuestionsList[currentQuestionIndex].Answer != null)
+                if (currentQuestionIndex < QuestionsList.Count - 1)
                 {
-                    Button btn = Controls.Find($"btn{currentQuestionIndex + 1}", true).FirstOrDefault() as Button;
+                    currentQuestionIndex++;
+                    DisplayCurrentQuestion();
 
-                    // Change the background color of the button
-                    if (btn != null)
-                    {
-                        btn.BackColor = Color.LightGray; 
-                    }
+                    int progress = (currentQuestionIndex + 1) * 100 / QuestionsList.Count;
+                    UpdateProgressBar(progress);
                 }
-                currentQuestionIndex++;
-                DisplayCurrentQuestion();
-
+                Next_Back_btn();
             }
-            Next_Back_btn();
         }
 
         private void btn_back_Click(object sender, EventArgs e)
         {
-            if (currentQuestionIndex > 0)
+            if (ValidateAnswerSelected())
             {
-                if (QuestionsList[currentQuestionIndex].Answer != null)
+                if (currentQuestionIndex > 0)
                 {
-                    Button btn = Controls.Find($"btn{currentQuestionIndex + 1}", true).FirstOrDefault() as Button;
-                    if (btn != null)
-                    {
-                        btn.BackColor = Color.LightGray;
-                    }
+                    currentQuestionIndex--;
+                    DisplayCurrentQuestion();
                 }
-                currentQuestionIndex--;
-                DisplayCurrentQuestion();
+                Next_Back_btn();
             }
-            Next_Back_btn();
+        }
+
+        private bool ValidateAnswerSelected()
+        {
+            if (!rb_ans1.Checked && !rb_ans2.Checked && !rb_ans3.Checked && !rb_ans4.Checked)
+            {
+                MessageBox.Show("Please select an answer before proceeding.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
         }
 
         private void btn_submit_Click(object sender, EventArgs e)
         {
-            Timer.Stop();
-            FinalResultForm result = new FinalResultForm(EID, CID, StuID);
-            this.Hide();
-            result.ShowDialog();
-            this.Close();
-        }
-
-        private void DisplayQuestionByButtonIndex(int questionIndex)
-        {
-            if (questionIndex < QuestionsList.Count)
+            if (ValidateAnswerSelected())
             {
-                currentQuestionIndex = questionIndex;
-                DisplayCurrentQuestion();
-            }
-            Next_Back_btn();
-        }
-        private void btn_Click(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            //DisplayQuestionByButtonIndex(int.Parse(btn.Text) - 1);
-            if (btn != null && int.TryParse(btn.Text, out int buttonNumber))
-            {
-                if (QuestionsList[currentQuestionIndex].Answer != null)
-                {
-                    Button btn2 = Controls.Find($"btn{currentQuestionIndex + 1}", true).FirstOrDefault() as Button;
+                Timer.Stop();
+                FinalResultForm result = new FinalResultForm(EID, CID, StuID);
+                Hide();
+                result.ShowDialog();
+                Close();
 
-                    // Change the background color of the button
-                    if (btn2 != null)
-                    {
-                        btn.BackColor = Color.LightGray;
-                    }
-                }
-                DisplayQuestionByButtonIndex(buttonNumber - 1);
+                UpdateProgressBar(100);
             }
         }
 
@@ -289,5 +293,33 @@ namespace Examination_System
         {
             lbl_timer.Text = remainingTime.ToString(@"hh\:mm\:ss");
         }
+
+        private void btn_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null && int.TryParse(btn.Text, out int buttonNumber))
+            {
+                if (ValidateAnswerSelected())
+                {
+                    DisplayQuestionByButtonIndex(buttonNumber - 1);
+                }
+            }
+        }
+
+        private void DisplayQuestionByButtonIndex(int questionIndex)
+        {
+            if (questionIndex < QuestionsList.Count)
+            {
+                currentQuestionIndex = questionIndex;
+                DisplayCurrentQuestion();
+            }
+            Next_Back_btn();
+        }
+    }
+
+    internal class ExamViewModel
+    {
+        public int Id { get; set; }
+        public string Msg { get; set; }
     }
 }
