@@ -68,9 +68,10 @@
             // lbl_Cname
             // 
             lbl_Cname.AutoSize = true;
+            lbl_Cname.Font = new Font("Comic Sans MS", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lbl_Cname.Location = new Point(920, 35);
             lbl_Cname.Name = "lbl_Cname";
-            lbl_Cname.Size = new Size(13, 17);
+            lbl_Cname.Size = new Size(15, 20);
             lbl_Cname.TabIndex = 1;
             lbl_Cname.Text = "-";
             // 

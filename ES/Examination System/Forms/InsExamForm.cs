@@ -45,93 +45,96 @@ namespace Examination_System
             course_name.Text = title.Text = grade.Text = choice1.Text = choice2.Text = choice3.Text = choice4.Text = "";
 
         }
+
         private void add_btn_Click(object sender, EventArgs e)
         {
+            
+            if (string.IsNullOrWhiteSpace(title.Text) || string.IsNullOrWhiteSpace(grade.Text))
+            {
+                MessageBox.Show("Please fill in all required fields.");
+                return;
+            }
+
+            // Check if all choices are filled in for MCQ questions
+            if ( string.IsNullOrWhiteSpace(choice1.Text) ||
+                               string.IsNullOrWhiteSpace(choice2.Text) ||
+                               string.IsNullOrWhiteSpace(choice3.Text) ||
+                               string.IsNullOrWhiteSpace(choice4.Text))
+            {
+                MessageBox.Show("Please fill in all choices for multiple-choice questions.");
+                return;
+            }
+
+            // Check if at least one correct answer is selected for each choice
+            if ((isCorrect1.Checked || isCorrect2.Checked || isCorrect3.Checked || isCorrect4.Checked) == false)
+            {
+                MessageBox.Show("Please select at least one correct answer for each choice.");
+                return;
+            }
+
+            // Parse input values
             string questionText = title.Text;
-
-            //string courseName = course_name.Text;
-
             int questionType = mcq_radio.Checked ? 1 : 0;
+            int questionGrade;
 
-            //Course existingCourse = db.Courses.FirstOrDefault(c => c.Name == courseName);
-            //if (existingCourse == null)
-            //{
-            //    MessageBox.Show("There is no course with this name.");
-            //    return;
-            //}
+            if (!int.TryParse(grade.Text, out questionGrade))
+            {
+                MessageBox.Show("Please enter a valid grade value.");
+                return;
+            }
 
-            List<string> choices = new List<string>();
-            choices.Add(choice1.Text);
-            choices.Add(choice2.Text);
+            // Create question entity
+            Question newQuestion = new Question
+            {
+                Title = questionText,
+                Type = (byte)questionType,
+                Grade = questionGrade,
+                CourseId = CourseID
+            };
 
+            // Add and save changes to question entity
+            db.Questions.Add(newQuestion);
+            db.SaveChanges();
+
+            int questionId = newQuestion.Id;
+
+            // Create and add choices
+            List<string> choices = new List<string> { choice1.Text, choice2.Text };
             if (questionType == 1)
             {
                 choices.Add(choice3.Text);
                 choices.Add(choice4.Text);
             }
 
-            Question newQuestion = new Question
-            {
-                Title = questionText,
-                Type = (byte)questionType,
-                Grade = int.Parse(grade.Text),
-                CourseId =CourseID
-                //CourseId = existingCourse.Id
-            };
-            db.Questions.Add(newQuestion);
-
-            db.SaveChanges();
-
-            int questionId = newQuestion.Id;
-
-
-            int choiceIndex = 0;
-            foreach (string choiceText in choices)
+            for (int i = 0; i < choices.Count; i++)
             {
                 QuestionChoice newChoice = new QuestionChoice
                 {
                     QId = questionId,
-                    Choice = choiceText
+                    Choice = choices[i],
+                    IsCorrect = (i == 0 ? isCorrect1.Checked : i == 1 ? isCorrect2.Checked :
+                                 i == 2 ? isCorrect3.Checked : isCorrect4.Checked)
                 };
-
-
-                switch (choiceIndex)
-                {
-                    case 0:
-                        newChoice.IsCorrect = isCorrect1.Checked;
-                        break;
-                    case 1:
-                        newChoice.IsCorrect = isCorrect2.Checked;
-                        break;
-                    case 2:
-                        newChoice.IsCorrect = isCorrect3.Checked;
-                        break;
-                    case 3:
-                        newChoice.IsCorrect = isCorrect4.Checked;
-                        break;
-                    default:
-                        MessageBox.Show("There is an Error");
-                        break;
-                }
-
-
-
                 db.QuestionChoices.Add(newChoice);
-                choiceIndex++;
             }
 
-
+            // Save changes to choices
             db.SaveChanges();
 
-            //DataGridView.DataSource = db.Questions.Select(s => new { s.Id, s.Title, s.Type, s.Grade }).ToList();
-            DataGridView.DataSource = db.Questions.Where(q => q.CourseId == CourseID).Select(s => new { s.Id, s.Title, s.Type, s.Grade }).ToList();
+            // Update DataGridView
+            DataGridView.DataSource = db.Questions.Where(q => q.CourseId == CourseID)
+                                                   .Select(s => new { s.Id, s.Title, s.Type, s.Grade })
+                                                   .ToList();
 
+            // Display success message
             MessageBox.Show("Question added successfully.");
 
+            // Clear input fields
             clear();
-
-
         }
+
+
+
 
 
         private void DataGridView_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
