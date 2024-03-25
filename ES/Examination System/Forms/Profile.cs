@@ -105,7 +105,7 @@ namespace Examination_System
 
         private void btn_pass_Click(object sender, EventArgs e)
         {
-            Update_password password = new Update_password(Id, Role);
+            UpdatePasswordForm password = new UpdatePasswordForm(Id, Role);
             this.Hide();
             password.ShowDialog();
             this.Close();
@@ -123,8 +123,11 @@ namespace Examination_System
             }
             else if (Role == "Instructor")
             {
-               
-                
+
+                Course_InstForm cource = new Course_InstForm(Id);
+                this.Hide();
+                cource.ShowDialog();
+                this.Close();
             }
         }
 
