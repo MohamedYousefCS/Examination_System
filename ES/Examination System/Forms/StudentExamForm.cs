@@ -61,7 +61,7 @@ namespace Examination_System
                 Timer.Start();
 
                 // Update progress bar to indicate exam loading progress
-                UpdateProgressBar(25);
+                UpdateProgressBar(5);
             }
             catch (Exception ex)
             {
@@ -106,7 +106,7 @@ namespace Examination_System
         private void GetExamQuestion()
         {
             QuestionsList = db.ExamStQs.FromSql($"EXECUTE Select_Exam_st_Q_For_Exam {EID},{StuID}").ToList();
-            lbl_Etitle.Text = db.Exams.FromSql($"EXECUTE Select_exam {EID}").AsEnumerable().SingleOrDefault()?.Title;
+           
         }
 
         private void ResetAnswers()
@@ -142,13 +142,13 @@ namespace Examination_System
 
                     if (Current?.Type == 0)
                     {
-                        lbl_Type.Text = "T/F Question: ";
+                       
                         rb_ans3.Visible = false;
                         rb_ans4.Visible = false;
                     }
                     else
                     {
-                        lbl_Type.Text = "Mcq Question: ";
+                        
                         rb_ans3.Text = chocies.ElementAtOrDefault(2)?.Choice ?? "";
                         rb_ans4.Text = chocies.ElementAtOrDefault(3)?.Choice ?? "";
                         rb_ans3.Visible = true;
