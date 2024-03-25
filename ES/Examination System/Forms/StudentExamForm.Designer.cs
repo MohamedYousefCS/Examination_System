@@ -63,7 +63,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(738, 156);
             label1.Name = "label1";
-            label1.Size = new Size(99, 20);
+            label1.Size = new Size(79, 17);
             label1.TabIndex = 0;
             label1.Text = "Course Name";
             // 
@@ -72,7 +72,7 @@
             lbl_Cname.AutoSize = true;
             lbl_Cname.Location = new Point(857, 156);
             lbl_Cname.Name = "lbl_Cname";
-            lbl_Cname.Size = new Size(15, 20);
+            lbl_Cname.Size = new Size(13, 17);
             lbl_Cname.TabIndex = 1;
             lbl_Cname.Text = "-";
             // 
@@ -81,7 +81,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(738, 190);
             label3.Name = "label3";
-            label3.Size = new Size(83, 20);
+            label3.Size = new Size(69, 17);
             label3.TabIndex = 2;
             label3.Text = "Exam Title";
             // 
@@ -90,16 +90,17 @@
             lbl_Etitle.AutoSize = true;
             lbl_Etitle.Location = new Point(857, 190);
             lbl_Etitle.Name = "lbl_Etitle";
-            lbl_Etitle.Size = new Size(15, 20);
+            lbl_Etitle.Size = new Size(13, 17);
             lbl_Etitle.TabIndex = 3;
             lbl_Etitle.Text = "-";
             // 
             // lbl_question
             // 
             lbl_question.AutoSize = true;
+            lbl_question.Font = new Font("Comic Sans MS", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lbl_question.Location = new Point(41, 154);
             lbl_question.Name = "lbl_question";
-            lbl_question.Size = new Size(72, 20);
+            lbl_question.Size = new Size(77, 23);
             lbl_question.TabIndex = 4;
             lbl_question.Text = "Question";
             // 
@@ -108,16 +109,17 @@
             lbl_grade.AutoSize = true;
             lbl_grade.Location = new Point(41, 125);
             lbl_grade.Name = "lbl_grade";
-            lbl_grade.Size = new Size(46, 20);
+            lbl_grade.Size = new Size(36, 17);
             lbl_grade.TabIndex = 5;
             lbl_grade.Text = "Mark";
             // 
             // rb_ans1
             // 
             rb_ans1.AutoSize = true;
+            rb_ans1.Font = new Font("Comic Sans MS", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             rb_ans1.Location = new Point(41, 253);
             rb_ans1.Name = "rb_ans1";
-            rb_ans1.Size = new Size(89, 24);
+            rb_ans1.Size = new Size(80, 23);
             rb_ans1.TabIndex = 6;
             rb_ans1.TabStop = true;
             rb_ans1.Text = "Answer1";
@@ -127,9 +129,10 @@
             // rb_ans2
             // 
             rb_ans2.AutoSize = true;
+            rb_ans2.Font = new Font("Comic Sans MS", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             rb_ans2.Location = new Point(41, 299);
             rb_ans2.Name = "rb_ans2";
-            rb_ans2.Size = new Size(91, 24);
+            rb_ans2.Size = new Size(80, 23);
             rb_ans2.TabIndex = 7;
             rb_ans2.TabStop = true;
             rb_ans2.Text = "Answer2";
@@ -139,9 +142,10 @@
             // rb_ans3
             // 
             rb_ans3.AutoSize = true;
+            rb_ans3.Font = new Font("Comic Sans MS", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             rb_ans3.Location = new Point(41, 347);
             rb_ans3.Name = "rb_ans3";
-            rb_ans3.Size = new Size(91, 24);
+            rb_ans3.Size = new Size(80, 23);
             rb_ans3.TabIndex = 8;
             rb_ans3.TabStop = true;
             rb_ans3.Text = "Answer3";
@@ -151,9 +155,10 @@
             // rb_ans4
             // 
             rb_ans4.AutoSize = true;
+            rb_ans4.Font = new Font("Comic Sans MS", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             rb_ans4.Location = new Point(41, 396);
             rb_ans4.Name = "rb_ans4";
-            rb_ans4.Size = new Size(91, 24);
+            rb_ans4.Size = new Size(80, 23);
             rb_ans4.TabIndex = 9;
             rb_ans4.TabStop = true;
             rb_ans4.Text = "Answer4";
@@ -298,10 +303,10 @@
             // lbl_timer
             // 
             lbl_timer.AutoSize = true;
-            lbl_timer.Font = new Font("LCDMono2", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_timer.Font = new Font("Microsoft Sans Serif", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lbl_timer.Location = new Point(800, 103);
             lbl_timer.Name = "lbl_timer";
-            lbl_timer.Size = new Size(105, 20);
+            lbl_timer.Size = new Size(80, 24);
             lbl_timer.TabIndex = 23;
             lbl_timer.Text = "00:00:00";
             // 
@@ -310,7 +315,7 @@
             lbl_Type.AutoSize = true;
             lbl_Type.Location = new Point(87, 63);
             lbl_Type.Name = "lbl_Type";
-            lbl_Type.Size = new Size(43, 20);
+            lbl_Type.Size = new Size(34, 17);
             lbl_Type.TabIndex = 24;
             lbl_Type.Text = "Type";
             // 
@@ -319,15 +324,15 @@
             lbl_index.AutoSize = true;
             lbl_index.Location = new Point(41, 63);
             lbl_index.Name = "lbl_index";
-            lbl_index.Size = new Size(51, 20);
+            lbl_index.Size = new Size(40, 17);
             lbl_index.TabIndex = 25;
             lbl_index.Text = "Index";
             // 
-            // StudExam
+            // StudentExamForm
             // 
-            AutoScaleDimensions = new SizeF(9F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1029, 575);
+            ClientSize = new Size(1031, 583);
             Controls.Add(lbl_index);
             Controls.Add(lbl_Type);
             Controls.Add(lbl_timer);
@@ -357,7 +362,7 @@
             Font = new Font("Comic Sans MS", 9F);
             MaximumSize = new Size(1047, 622);
             MinimumSize = new Size(1047, 622);
-            Name = "StudExam";
+            Name = "StudentExamForm";
             SizeGripStyle = SizeGripStyle.Hide;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Exam";
