@@ -133,12 +133,15 @@ namespace Examination_System
 
         private void btn_Reports_Click(object sender, EventArgs e)
         {
-         
+            Reports report = new Reports(Id);
+            this.Hide();
+            report.ShowDialog();
+            this.Close();
         }
 
         private void btn_logOut_Click(object sender, EventArgs e)
         {
-            LogIn log=new LogIn();
+            LogIn log = new LogIn();
             this.Hide();
             log.ShowDialog();
             this.Close();

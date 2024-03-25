@@ -41,6 +41,41 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>GetStudentGradeDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Update="Forms\CalcStudentGradesDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CalcStudentGradesDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\DisplayExamDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DisplayExamDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\ExamCorrectionDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExamCorrectionDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\ExaminationSystemDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExaminationSystemDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\GetCrsTopicsDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GetCrsTopicsDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\GetStudentCountInCrs.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GetStudentCountInCrs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\GetStudentGradeDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GetStudentGradeDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -68,11 +103,34 @@
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>GetStudentGradeDataSet.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ReportsForms\" />
-    <Folder Include="Reports\" />
+    <None Update="Forms\CalcStudentGradesDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CalcStudentGradesDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Forms\DisplayExamDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DisplayExamDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Forms\ExamCorrectionDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ExamCorrectionDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Forms\ExaminationSystemDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ExaminationSystemDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Forms\GetCrsTopicsDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GetCrsTopicsDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Forms\GetStudentCountInCrs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GetStudentCountInCrs.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Forms\GetStudentGradeDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GetStudentGradeDataSet.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>
