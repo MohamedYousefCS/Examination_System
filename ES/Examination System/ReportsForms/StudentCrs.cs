@@ -57,7 +57,7 @@ namespace Examination_System
 
                 reportStudnetCourseById.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", _dataSet.Tables["GetStudentCoursesByCourseId"]));
 
-                reportStudnetCourseById.LocalReport.ReportPath = "C:\\Users\\lap0\\OneDrive\\Desktop\\ExaminionSystem\\Examination_System\\ES\\Examination System\\Reports\\StudentsByCourseId.rdlc";
+                reportStudnetCourseById.LocalReport.ReportPath = "C:\\Users\\lap0\\OneDrive\\Desktop\\Examination_System\\Examination_System\\ES\\Examination System\\Reports\\StudentsByCourseId.rdlc";
                 reportStudnetCourseById.RefreshReport();
             }
             catch (Exception ex)

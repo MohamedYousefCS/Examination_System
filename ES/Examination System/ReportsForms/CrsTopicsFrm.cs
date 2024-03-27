@@ -50,7 +50,7 @@ namespace Examination_System.ReportsForms
 
                 CrsTopics.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", _dataSet.Tables["GetCourseTopics"]));
 
-                CrsTopics.LocalReport.ReportPath = "C:\\Users\\lap0\\OneDrive\\Desktop\\ExaminionSystem\\Examination_System\\ES\\Examination System\\Reports\\GetTopics.rdlc";
+                CrsTopics.LocalReport.ReportPath = "..\\Reports\\GetTopics.rdlc";
                 CrsTopics.RefreshReport();
             }
             catch (Exception ex)

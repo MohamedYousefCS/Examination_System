@@ -52,7 +52,7 @@ namespace Examination_System.ReportsForms
 
                 Exam.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", _dataSet.Tables["DisplayExam"]));
 
-                Exam.LocalReport.ReportPath = "C:\\Users\\lap0\\OneDrive\\Desktop\\ExaminionSystem\\Examination_System\\ES\\Examination System\\Reports\\DisplayExam.rdlc";
+                Exam.LocalReport.ReportPath = "..\\Reports\\DisplayExam.rdlc";
 
                 Exam.RefreshReport();
             }

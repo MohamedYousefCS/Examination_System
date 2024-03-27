@@ -55,7 +55,7 @@ namespace Examination_System.ReportsForms
 
                 Exam.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", _dataSet.Tables["ExamCorrection"]));
 
-                Exam.LocalReport.ReportPath = "C:\\Users\\lap0\\OneDrive\\Desktop\\ExaminionSystem\\Examination_System\\ES\\Examination System\\Reports\\ExamCorrection.rdlc";
+                Exam.LocalReport.ReportPath = "..\\Reports\\ExamCorrection.rdlc";
 
                 Exam.RefreshReport();
             }
