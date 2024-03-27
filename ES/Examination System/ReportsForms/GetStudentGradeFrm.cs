@@ -58,7 +58,8 @@ namespace Examination_System.ReportsForms
 
                 GetStudentGrades.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", _dataSet.Tables["CalculateStudentGrade"]));
 
-                GetStudentGrades.LocalReport.ReportPath = "..\\..\\Reports\\GetStudGrade.rdlc";
+                GetStudentGrades.LocalReport.ReportPath = @"../../../Reports\\GetStudGrade.rdlc";
+
 
                 GetStudentGrades.RefreshReport();
             }
