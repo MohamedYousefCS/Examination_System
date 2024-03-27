@@ -38,7 +38,7 @@ public partial class ExaminationSystemContext : DbContext
     public virtual DbSet<Student> Students { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ExaminationSystem;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Server=.;Database=ExaminationSystem;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -68,6 +68,25 @@ public partial class ExaminationSystemContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+
+            entity.HasMany(d => d.Departments).WithMany(p => p.Courses)
+                .UsingEntity<Dictionary<string, object>>(
+                    "CourseDepartment",
+                    r => r.HasOne<Department>().WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_CourseDepartment_Department"),
+                    l => l.HasOne<Course>().WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_CourseDepartment_Course"),
+                    j =>
+                    {
+                        j.HasKey("CourseId", "DepartmentId");
+                        j.ToTable("CourseDepartment");
+                        j.IndexerProperty<int>("CourseId").HasColumnName("Course_id");
+                        j.IndexerProperty<int>("DepartmentId").HasColumnName("Department_id");
+                    });
 
             entity.HasMany(d => d.Insts).WithMany(p => p.Courses)
                 .UsingEntity<Dictionary<string, object>>(
@@ -220,11 +239,12 @@ public partial class ExaminationSystemContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CourseId).HasColumnName("Course_id");
             entity.Property(e => e.Title)
-                .HasMaxLength(50)
+                .HasMaxLength(500)
                 .IsUnicode(false);
 
             entity.HasOne(d => d.Course).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.CourseId)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Question_Course");
         });
 
@@ -248,6 +268,8 @@ public partial class ExaminationSystemContext : DbContext
         {
             entity.ToTable("Student");
 
+            entity.HasIndex(e => e.Email, "unique_email").IsUnique();
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DeptId).HasColumnName("Dept_id");
             entity.Property(e => e.Email)
@@ -259,6 +281,10 @@ public partial class ExaminationSystemContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.Dept).WithMany(p => p.Students)
+                .HasForeignKey(d => d.DeptId)
+                .HasConstraintName("FK_Student_Department");
         });
 
         OnModelCreatingPartial(modelBuilder);

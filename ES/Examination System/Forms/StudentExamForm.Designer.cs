@@ -59,7 +59,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Tahoma", 9.75F, FontStyle.Bold);
-            label1.Location = new Point(801, 35);
+            label1.Location = new Point(435, 53);
             label1.Name = "label1";
             label1.Size = new Size(91, 16);
             label1.TabIndex = 0;
@@ -68,10 +68,10 @@
             // lbl_Cname
             // 
             lbl_Cname.AutoSize = true;
-            lbl_Cname.Font = new Font("Comic Sans MS", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_Cname.Location = new Point(920, 35);
+            lbl_Cname.Font = new Font("Comic Sans MS", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbl_Cname.Location = new Point(554, 53);
             lbl_Cname.Name = "lbl_Cname";
-            lbl_Cname.Size = new Size(15, 20);
+            lbl_Cname.Size = new Size(19, 21);
             lbl_Cname.TabIndex = 1;
             lbl_Cname.Text = "-";
             // 

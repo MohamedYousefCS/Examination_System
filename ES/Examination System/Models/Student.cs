@@ -15,6 +15,8 @@ public partial class Student
 
     public int? DeptId { get; set; }
 
+    public virtual Department? Dept { get; set; }
+
     public virtual ICollection<ExamStQ> ExamStQs { get; set; } = new List<ExamStQ>();
 
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
