@@ -58,7 +58,7 @@ namespace Examination_System.ReportsForms
 
                 StuCount.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", _dataSet.Tables["GetInstructorCoursesAndStudents"]));
 
-                StuCount.LocalReport.ReportPath = "..\\Reports\\GetStuCountInCrs.rdlc";
+                StuCount.LocalReport.ReportPath = @"../../../Reports\\GetStuCountInCrs.rdlc";
                 StuCount.RefreshReport();
             }
             catch (Exception ex)
