@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace Examination_System
 {
+
     public partial class Course_InstForm : Form
     {
         ExaminationSystemContext db;
@@ -30,6 +31,8 @@ namespace Examination_System
             btn_delete.Visible = false;
             btn_questions.Visible = false;
             btn_topics.Visible = false;
+
+           
         }
 
         private void LoadCourses()
