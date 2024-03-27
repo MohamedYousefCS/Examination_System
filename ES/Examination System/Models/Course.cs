@@ -15,11 +15,11 @@ public partial class Course
 
     public int Grade { get; set; }
 
+    public virtual ICollection<CourseDepartment> CourseDepartments { get; set; } = new List<CourseDepartment>();
+
     public virtual ICollection<CourseTopic> CourseTopics { get; set; } = new List<CourseTopic>();
 
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
-
-    public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
 
     public virtual ICollection<Instructor> Insts { get; set; } = new List<Instructor>();
 

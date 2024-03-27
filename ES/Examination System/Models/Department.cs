@@ -15,9 +15,9 @@ public partial class Department
 
     public virtual Branch Branch { get; set; }
 
+    public virtual ICollection<CourseDepartment> CourseDepartments { get; set; } = new List<CourseDepartment>();
+
     public virtual ICollection<DeptInst> DeptInsts { get; set; } = new List<DeptInst>();
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
-
-    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 }
