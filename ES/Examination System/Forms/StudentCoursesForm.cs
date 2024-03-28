@@ -15,7 +15,38 @@ namespace Examination_System
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dgv_Courses.DataSource = db.Courses.Select(c => new { c.Id, c.Name, c.Duration, c.Grade }).ToList();
+            int studentId = StdId;
+            var student = db.Students.FirstOrDefault(s => s.Id == studentId);
+            if (student != null)
+            {
+                int? deptId = student.DeptId;
+                if (deptId != null)
+                {
+                    var coursesInDepartment = db.Courses
+                 .Where(c => c.CourseDepartments.Any(cd => cd.DepartmentId == deptId))
+                 .Select(c => new { c.Id, c.Name, c.Duration, c.Grade })
+                 .ToList();
+                    dgv_Courses.DataSource = coursesInDepartment;
+
+
+
+                }
+                else
+                {
+                    var coursesInDepartment = db.Courses
+                 .Where(c => c.CourseDepartments.Any(cd => cd.DepartmentId == 1))
+                 .Select(c => new { c.Id, c.Name, c.Duration, c.Grade })
+                 .ToList();
+                    dgv_Courses.DataSource = coursesInDepartment;
+
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Student with ID {studentId} not found.");
+            }
+
+
             lb_topics.Visible = false;
             btn_takeExam.Visible = false;
             lbl_topic.Visible = false;
